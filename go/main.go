@@ -28,7 +28,10 @@ type Valute struct {
 
 func request() ([]byte, error) {
 	client := &http.Client{}
-	req, err := http.NewRequest("GET", "https://www.cbr.ru/scripts/XML_daily.asp", nil)
+	
+	url := "https://www.cbr.ru/scripts/XML_daily.asp"
+
+	req, err := http.NewRequest("GET", url, nil)
 
 	if err != nil {
 		fmt.Println("Ошибка создания запроса:", err)
