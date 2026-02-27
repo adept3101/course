@@ -58,12 +58,17 @@ int main() {
   // cJSON *usd = cJSON_GetObjectItem(char_code, "USD");
 
   cJSON *item = NULL;
+  char code[3];
+
+  printf("Введите код валюты:");
+  scanf("%s", code);
+
   cJSON_ArrayForEach(item, valute) {
     cJSON *charCode = cJSON_GetObjectItem(item, "CharCode");
-    if (cJSON_IsString(charCode) && strcmp(charCode->valuestring, "USD") == 0) {
+    if (cJSON_IsString(charCode) && strcmp(charCode->valuestring, code) == 0) {
       cJSON *value = cJSON_GetObjectItem(item, "Value");
       if (cJSON_IsString(value)) {
-        printf("USD value: %s\n", value->valuestring);
+        printf("%s: %s\n", code, value->valuestring);
       }
       break;
     }
