@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 struct memory {
   char *response;
@@ -27,7 +28,7 @@ size_t write_callback(char *data, size_t size, size_t nmemb, void *userp) {
   return total_size;
 }
 
-int main() {
+int main(int argc, char *argv[]) {
   // char* url = "https://www.cbr.ru/scripts/XML_daily.asp";
   struct memory chunk = {0};
   char *url = "http://localhost:8080";
@@ -59,6 +60,7 @@ int main() {
 
   cJSON *item = NULL;
   char code[3];
+  char *chcode;
 
   printf("Введите код валюты:");
   scanf("%s", code);
@@ -68,19 +70,22 @@ int main() {
     if (cJSON_IsString(charCode) && strcmp(charCode->valuestring, code) == 0) {
       cJSON *value = cJSON_GetObjectItem(item, "Value");
       if (cJSON_IsString(value)) {
-        printf("%s: %s\n", code, value->valuestring);
+        // printf("%s: %s\n", code, value->valuestring);
+        chcode = value->valuestring;
+
+        for (int i = 0; chcode[i]; i++) {
+          if (chcode[i] == ',') {
+            chcode[i] = '.';
+          }
+        }
+
+        double l_val = strtod(chcode, NULL);
+        l_val = floor(l_val * 100) / 100;
+        printf("%s:%.2f\n", code, l_val);
       }
       break;
     }
   }
-
-  // printf("%.2f\n", usd->valuedouble);
-
-  // if (cJSON_IsNumber(item)) {
-  //   printf("%.2f\n", i->valuedouble);
-  // } else {
-  //   fprintf(stderr, "EROR: USD not found\n");
-  // }
 
   curl_easy_cleanup(curl);
   return 0;
