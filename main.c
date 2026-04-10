@@ -59,11 +59,16 @@ int main(int argc, char *argv[]) {
   // cJSON *usd = cJSON_GetObjectItem(char_code, "USD");
 
   cJSON *item = NULL;
-  char code[3];
+  char code[4];
   char *chcode;
+  int num;
 
   printf("Введите код валюты:");
-  scanf("%s", code);
+  // scanf("%s", code);
+
+  scanf("%d ", &num);
+  fgets(code, sizeof(code), stdin);
+  printf("Result:%s %d\n", code, num);
 
   cJSON_ArrayForEach(item, valute) {
     cJSON *charCode = cJSON_GetObjectItem(item, "CharCode");
@@ -81,7 +86,7 @@ int main(int argc, char *argv[]) {
 
         double l_val = strtod(chcode, NULL);
         l_val = floor(l_val * 100) / 100;
-        printf("%s:%.2f\n", code, l_val);
+        printf("%s:%.2f\n", code, l_val * num);
       }
       break;
     }
