@@ -29,10 +29,8 @@ size_t write_callback(char *data, size_t size, size_t nmemb, void *userp) {
 }
 
 int main(int argc, char *argv[]) {
-  // char* url = "https://www.cbr.ru/scripts/XML_daily.asp";
   struct memory chunk = {0};
   char *url = "http://localhost:8080";
-  // snprintf(url, sizeof(url), , ...)
   CURL *curl = curl_easy_init();
 
   CURLcode res;
@@ -55,8 +53,6 @@ int main(int argc, char *argv[]) {
   cJSON *json = cJSON_Parse(chunk.response);
 
   cJSON *valute = cJSON_GetObjectItem(json, "Valute");
-  // cJSON *char_code = cJSON_GetObjectItem(valute, "CharCode");
-  // cJSON *usd = cJSON_GetObjectItem(char_code, "USD");
 
   cJSON *item = NULL;
   char code[4];
@@ -68,14 +64,12 @@ int main(int argc, char *argv[]) {
 
   scanf("%d ", &num);
   fgets(code, sizeof(code), stdin);
-  printf("Result:%s %d\n", code, num);
 
   cJSON_ArrayForEach(item, valute) {
     cJSON *charCode = cJSON_GetObjectItem(item, "CharCode");
     if (cJSON_IsString(charCode) && strcmp(charCode->valuestring, code) == 0) {
       cJSON *value = cJSON_GetObjectItem(item, "Value");
       if (cJSON_IsString(value)) {
-        // printf("%s: %s\n", code, value->valuestring);
         chcode = value->valuestring;
 
         for (int i = 0; chcode[i]; i++) {
